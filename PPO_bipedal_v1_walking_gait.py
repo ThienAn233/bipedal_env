@@ -317,26 +317,12 @@ class custom_dataset(Dataset):
     
 trainer = PPO_bipedal_walker_train(
                                 PATH='bipedal_env//',
-                                ### This policy doesnot walk but make small jumps towards, effort = 10
-                                # load_model='2023-07-27-21-56-18',
-                                # load_model='2023-07-28-04-35-17',
-                                # load_model='2023-07-28-18-00-12',
-                                # load_model='2023-07-31-11-25-54',
-                                # load_model='2023-07-31-18-41-24',
-                                ### This policy experience friction and weight so it choose to jump, effort = 10
-                                # load_model='2023-08-02-19-32-20',
-                                # load_model='2023-08-03-01-39-56',
-                                # load_model='2023-08-03-19-44-50',
-                                ### this policy give more torque to the leg
-                                # load_model='2023-08-06-18-59-18',
-                                ### This policy deals with uneven terain, from height 0 to .05
-                                # load_model='2023-08-07-05-51-06',
-                                # load_model='2023-08-12-02-28-34_best_0.34',
+                                load_model='2023-08-14-02-21-14',
                                 number_of_robot = 9,
                                 learning_rate = 1e-4,
                                 data_size = 400,
                                 batch_size = 1800,
-                                epochs=200,
+                                epochs=2000,
                                 thresh=1,
                                 explore = 1e-6,
                                 alpha = 0.5,
