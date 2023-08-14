@@ -104,7 +104,7 @@ class PPO_bipedal_walker_train():
                 def __init__(self):
                     super(MLP,self).__init__()
                 # nn setup
-                    lin1 = nn.Linear(observation_space+action_space,500)
+                    lin1 = nn.Linear(observation_space,500)
                     torch.nn.init.xavier_normal_(lin1.weight,gain=1)
                     lin2 = nn.Linear(500,100)
                     torch.nn.init.xavier_normal_(lin2.weight,gain=1)
@@ -194,8 +194,8 @@ class PPO_bipedal_walker_train():
         local_values = []
         
         observation = self.env.get_obs()[0]
-        previous_action = self.env.previous_pos
-        observation = np.hstack([observation,previous_action])
+        # previous_action = self.env.previous_pos
+        # observation = np.hstack([observation,previous_action])
         
         timestep = np.array(self.env.time_steps_in_current_episode)
         local_timestep.append(torch.Tensor(timestep.copy()))
@@ -209,8 +209,8 @@ class PPO_bipedal_walker_train():
             self.env.sim(np.array(action.squeeze()),real_time=True)
             observation, reward, info= self.env.get_obs(train=True)
             # stacking obs and previous action
-            previous_action = action.squeeze()
-            observation = np.hstack([observation,previous_action])
+            # previous_action = action.squeeze()
+            # observation = np.hstack([observation,previous_action])
             # print(reward[0])
             print(reward[0])
             reward = np.sum(reward*self.reward_index,axis=-1)
@@ -325,7 +325,7 @@ trainer = PPO_bipedal_walker_train(
                                 # load_model='2023-07-17-14-58-50_best_7.59',
                                 # load_model='2023-07-19-10-46-35_best_2.86',
                                 # load_model='2023-07-20-19-19-45_best_0.75',
-                                load_model='2023-08-12-23-46-57_best_0.7',
+                                load_model='2023-08-14-07-58-59_best_1.22',
                                 number_of_robot = 2,
                                 learning_rate = 0,
                                 data_size = 1000,

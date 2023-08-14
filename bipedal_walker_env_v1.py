@@ -316,19 +316,19 @@ class bipedal_walker():
         surv = 30
         
         # Reward for minimal force
-        force = (-1e-4)*((self.reaction_force[robotId,:]**2).sum())
+        force = (-1e-5)*((self.reaction_force[robotId,:]**2).sum())
         
         # Reward for immitation
         immit = 5*self.calculate_imi_reward(robotId)
         return [speed, align, high, surv, force, immit ]
         
 # # TEST ###
-# env = bipedal_walker(render_mode='human',num_robot=2,show_traj=True,floor=True)
-# for _ in range(1200):
-#     env.sim(np.random.uniform(-.1,.1,(env.num_robot,8)),real_time=True)
-#     obs,rew,inf = env.get_obs()
-#     print(rew[0])
-#     # print(obs[0])
-#     # print(env.previous_pos)
-#     # print(env.delta_pos)
-# env.close()
+env = bipedal_walker(render_mode='human',num_robot=2,show_traj=True,floor=False)
+for _ in range(1200):
+    env.sim(np.random.uniform(-.2,.2,(env.num_robot,8)),real_time=True)
+    obs,rew,inf = env.get_obs()
+    print(rew[0])
+    # print(obs[0])
+    # print(env.previous_pos)
+    # print(env.delta_pos)
+env.close()

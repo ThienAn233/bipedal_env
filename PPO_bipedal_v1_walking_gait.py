@@ -317,9 +317,9 @@ class custom_dataset(Dataset):
     
 trainer = PPO_bipedal_walker_train(
                                 PATH='bipedal_env//',
-                                load_model='2023-08-14-02-21-14',
+                                load_model='2023-08-14-09-18-49',
                                 number_of_robot = 9,
-                                learning_rate = 1e-4,
+                                learning_rate = 1e-8,
                                 data_size = 400,
                                 batch_size = 1800,
                                 epochs=2000,
