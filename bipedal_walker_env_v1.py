@@ -74,7 +74,7 @@ class bipedal_walker():
         # print(f'ENVIRONMENT STARTED WITH SEED {self.seed}')
         p.setAdditionalSearchPath(pybullet_data.getDataPath(), physicsClientId = self.physicsClient)
         # load trajectories files
-        trajectory_path = 'bipedal_env\\trajectories\\motion_full.csv'
+        trajectory_path = 'bipedal_env\\trajectories\\motion_01.csv'
         self.trajectories = pd.read_csv(trajectory_path)
             
         # Load URDF and print info
@@ -323,12 +323,12 @@ class bipedal_walker():
         return [speed, align, high, surv, force, immit ]
         
 # # TEST ###
-env = bipedal_walker(render_mode='human',num_robot=2,show_traj=True,floor=False)
-for _ in range(1200):
-    env.sim(np.random.uniform(-.2,.2,(env.num_robot,8)),real_time=True)
-    obs,rew,inf = env.get_obs()
-    print(rew[0])
-    # print(obs[0])
-    # print(env.previous_pos)
-    # print(env.delta_pos)
-env.close()
+# env = bipedal_walker(render_mode='human',num_robot=5,show_traj=False,floor=True)
+# for _ in range(1200):
+#     env.sim(np.random.uniform(-.1,.1,(env.num_robot,8)),real_time=True)
+#     obs,rew,inf = env.get_obs()
+#     # print(rew[0])
+#     # print(obs[0])
+#     # print(env.previous_pos)
+#     # print(env.delta_pos)
+# env.close()

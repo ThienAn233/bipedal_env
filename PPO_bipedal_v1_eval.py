@@ -88,7 +88,7 @@ class PPO_bipedal_walker_train():
             self.writer = SummaryWriter(PATH + '//runs//PPO//'+t.strftime('%Y-%m-%d-%H-%M-%S', t.localtime()))
             # Envs setup
         
-        self.env = envi.bipedal_walker(num_robot=self.number_of_robot,render_mode=self.render_mode,show_traj=True,floor=False)
+        self.env = envi.bipedal_walker(num_robot=self.number_of_robot,render_mode=self.render_mode,show_traj=True,floor=True)
         print('env is ready!')
         print(f'action space of {number_of_robot} robot is: {action_space}')
         print(f'observation sapce of {number_of_robot} robot is: {observation_space}')
@@ -325,7 +325,7 @@ trainer = PPO_bipedal_walker_train(
                                 # load_model='2023-07-17-14-58-50_best_7.59',
                                 # load_model='2023-07-19-10-46-35_best_2.86',
                                 # load_model='2023-07-20-19-19-45_best_0.75',
-                                load_model='2023-08-14-07-58-59_best_1.22',
+                                load_model='2023-08-15-13-22-46_best_1.81',
                                 number_of_robot = 2,
                                 learning_rate = 0,
                                 data_size = 1000,

@@ -36,7 +36,7 @@ class PPO_bipedal_walker_train():
                 # local variables
                 # Seed & devices
                 action_space = 8,
-                observation_space = 30,
+                observation_space = 29,
                 device = None):
 
                     
@@ -105,7 +105,7 @@ class PPO_bipedal_walker_train():
                 def __init__(self):
                     super(MLP,self).__init__()
                 # nn setup
-                    lin1 = nn.Linear(observation_space+action_space,500)
+                    lin1 = nn.Linear(observation_space,500)
                     torch.nn.init.xavier_normal_(lin1.weight,gain=1)
                     lin2 = nn.Linear(500,100)
                     torch.nn.init.xavier_normal_(lin2.weight,gain=1)
@@ -145,7 +145,7 @@ class PPO_bipedal_walker_train():
         ### Normalize the return and obs
         self.mlp.eval()
         with torch.no_grad():
-                data = self.get_data_from_env()
+                data = self.get_data_from_env(10000)
         data = custom_dataset(data,self.data_size,self.number_of_robot,self.gamma)
         self.qua_var_mean = torch.var_mean(data.local_return,dim=0)
         self.val_var_mean = torch.var_mean(data.local_values,dim=0)
@@ -184,8 +184,12 @@ class PPO_bipedal_walker_train():
             dummy_action = probs.sample((100,))
             return action.view(old_shape), probs.log_prob(action.view(logits.shape)), -probs.log_prob(dummy_action).mean(dim=0), values
 
-    def get_data_from_env(self):
+    def get_data_from_env(self,length = None):
         ### THE FIRST EPS WILL BE TIMESTEP 1, THE FINAL EP WILL BE TIMESTEP 0
+        if length:
+            pass
+        else:
+            length=self.data_size
         local_observation = []
         local_action = []
         local_logprob = []
@@ -194,12 +198,12 @@ class PPO_bipedal_walker_train():
         local_values = []
         
         observation = self.env.get_obs()[0]
-        previous_action = self.env.previous_pos
-        observation = np.hstack([observation,previous_action])
+        # previous_action = self.env.previous_pos
+        # observation = np.hstack([observation,previous_action])
         
         timestep = np.array(self.env.time_steps_in_current_episode)
         local_timestep.append(torch.Tensor(timestep.copy()))
-        for i in range(self.data_size) :
+        for i in range(length) :
             # act and get observation 
             action, logprob, values = self.get_actor_critic_action_and_values(torch.Tensor(observation).to(self.device))
             action, logprob = action.cpu(), logprob.cpu()
@@ -210,8 +214,8 @@ class PPO_bipedal_walker_train():
             observation, reward, info= self.env.get_obs(train=True)
             # stacking obs and previous action
             # print(reward[0])
-            previous_action = action
-            observation = np.hstack([observation,previous_action])
+            # previous_action = action
+            # observation = np.hstack([observation,previous_action])
             reward = np.sum(reward*self.reward_index,axis=-1)
             truncated = info
             
@@ -329,15 +333,15 @@ trainer = PPO_bipedal_walker_train(
                                 # load_model='2023-08-06-18-59-18',
                                 ### This policy deals with uneven terain, from height 0 to .05
                                 # load_model='2023-08-07-05-51-06',
-                                load_model='2023-08-12-02-28-34_best_0.34',
+                                # load_model='2023-08-12-02-28-34_best_0.34',
                                 number_of_robot = 9,
                                 learning_rate = 1e-4,
-                                data_size = 400,
-                                batch_size = 1800,
-                                epochs=2000,
+                                data_size = 10000,
+                                batch_size = 2000,
+                                epochs=100,
                                 thresh=1,
                                 explore = 1e-2,
-                                epsilon = 0.1,
+                                epsilon = 0.2,
                                 log_data = True,
                                 save_model = True,
                                 render_mode= False)
